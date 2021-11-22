@@ -31,10 +31,7 @@ app.post("/app/new/", (req, res) => {
 	const info = stmt.run(req.body.user, md5(req.body.pass));
 	res.status(201).json({
 		message:
-			info.changes +
-			" record created: ID " +
-			info.lastInsertRowid +
-			" (201)",
+			info.changes + " record created: ID " + req.params.id + " (201)",
 	});
 });
 
@@ -59,7 +56,10 @@ app.patch("/app/update/user/:id", (req, res) => {
 			"UPDATE userinfo SET user = COALESCE(?,user), pass = COALESCE(?,pass) WHERE id = ?"
 		)
 		.run(req.body.user, req.body.pass, req.params.id);
-	res.status(200).json(stmt.changes);
+	res.status(200).json({
+		message:
+			stmt.changes + " record updated: ID " + req.params.id + " (200)",
+	});
 });
 
 // DELETE a single user (HTTP method DELETE) at endpoint /app/delete/user/:id
@@ -67,7 +67,10 @@ app.delete("/app/delete/user/:id", (req, res) => {
 	const stmt = db
 		.prepare("DELETE FROM userinfo WHERE id = ?")
 		.run(req.params.id);
-	res.status(200).json(stmt);
+	res.status(200).json({
+		message:
+			stmt.changes + " record deleted: ID " + req.params.id + " (200)",
+	});
 });
 
 // Default response for any other request
