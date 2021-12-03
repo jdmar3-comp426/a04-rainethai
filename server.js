@@ -18,6 +18,11 @@ HTTP_PORT = 5000;
 app.listen(HTTP_PORT, () => {
 	console.log("Server running on port %PORT%".replace("%PORT%", HTTP_PORT));
 });
+// READ (HTTP method GET) at root endpoint /app/
+app.get("/app/", (req, res, next) => {
+	res.json({ message: "Your API works! (200)" });
+	res.status(200);
+});
 
 // Define other CRUD API endpoints using express.js and better-sqlite3
 // CREATE a new user (HTTP method POST) at endpoint /app/new/
